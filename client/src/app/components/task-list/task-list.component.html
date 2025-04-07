@@ -1,0 +1,33 @@
+<section class="task-list-container">
+    <div class="task-header">
+        <h2>Список завдань</h2>
+        <button mat-raised-button (click)="openDialog()">
+            Додати завдання
+        </button>
+    </div>
+    <mat-form-field>
+        <mat-label>Фільтр за статусом</mat-label>
+        <mat-select (selectionChange)="onSelected($event)">
+            <mat-option [value]="''">Всі</mat-option>
+            <mat-option [value]="TaskStatus.TODO">До роботи</mat-option>
+            <mat-option [value]="TaskStatus.IN_PROGRESS">В процесі</mat-option>
+            <mat-option [value]="TaskStatus.DONE">Виконано</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Пошук (назва, опис, виконавець)</mat-label>
+        <input matInput type="text" id="filter" [formControl]="filterControl" />
+    </mat-form-field>
+    @if (hasLoading) {
+    <mat-spinner></mat-spinner>
+    } @else {
+    <div class="task-list">
+        @if (myTasks$ | async; as data) { @for(task of data; track task.id; let
+        index = $index) {
+        <app-task-item [task]="task" (taskEdited)="editTask()"> </app-task-item>
+        } @empty {
+        <p>Завдання відсутні</p>
+        } }
+    </div>
+    }
+</section>
